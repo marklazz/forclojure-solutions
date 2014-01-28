@@ -92,3 +92,35 @@ true
 
 ;;Duplicate a Sequence
 #(reduce (fn [res el] (conj (conj res el) el)) [] %)
+
+;;Replicate a Sequence
+#(reduce (fn [res el] (let [infinite (iterate identity el) finite-list (take %2 infinite)] (concat res finite-list))) '() %1)
+
+;;Implement Range
+#(let [infinite (iterate inc %1) amount (- %2 %1)] (take amount infinite))
+
+;;Local bindings
+7
+
+;;Let it be
+[z 1 y 3 x 7]
+
+;;Regular Exressions
+"ABC"
+
+;;Maximum Value
+(fn [& params] (reduce #(if (nil? %1) %2 (if (> %2 %1) %2 %1)) nil params))
+
+;;Inerleave sequecens
+#((comp flatten (fn [l1 l2] (map list l1 l2))) %1 %2)
+
+;;Interpose a Seq
+#((comp rest (fn [l1 l2] (interleave (iterate identity l1) l2))) %1 %2)
+#(rest (interleave (iterate identity %1) %2))
+
+;;Drop Every Nth Item
+#(first (reduce (fn [res el] (let [current (last res) list (first res)] (if (= current %2) [list 1] [(conj list el) (inc current)]))) [[] 1] %1))
+(fn [s n] (mapcat (partial take (dec n)) (partition-all n s)))
+
+;;Factorial Fun
+#(loop [x % r 1] (if (< x 2) r (recur (- x 1) (* r x))))
